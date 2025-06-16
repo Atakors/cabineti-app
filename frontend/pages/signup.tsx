@@ -21,7 +21,14 @@ export default function SignUpPage() {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
+      if (!process.env.NEXT_PUBLIC_API_URL) {
+        throw new Error("API URL is not configured. Please check environment variables.");
+      }
+
+      // Robustly construct the URL to avoid double slashes
+      const apiUrl = new URL('/api/auth/register', process.env.NEXT_PUBLIC_API_URL);
+
+      const res = await fetch(apiUrl.href, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullName, email, password }),
@@ -78,7 +85,7 @@ export default function SignUpPage() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
             Sign Up
           </button>
           {error && <p className="text-red-500 text-sm mt-4 text-center">{error}</p>}
