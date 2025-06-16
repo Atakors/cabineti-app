@@ -69,7 +69,7 @@ export default function SignUpPage() {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700">Password</e-mail>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
             <input
               type="password"
               value={password}
